@@ -3,22 +3,30 @@ from __future__ import annotations
 from aqt import mw
 from aqt.deckbrowser import DeckBrowser
 from aqt.theme import Theme, theme_manager
+from aqt.qt import QTimer
 
 __addon_name__ = "Theme Toggler"
-__version__ = "1.0.0"
+__version__ = "1.1"
 
 TOGGLE_CMD = "toggle-theme"
 TOGGLE_LABEL = "Toggle Theme"
 _PATCH_FLAG = "_theme_toggler_patched"
 
 
-def _toggle_theme() -> None:
+def _apply_theme() -> None:
+    # mw can be None or partially torn down during shutdown
+    if not mw:
+        return
+
     if theme_manager.night_mode:
         mw.set_theme(Theme.LIGHT)
     else:
         mw.set_theme(Theme.DARK)
-    if mw.state == "deckBrowser":
-        mw.deckBrowser.refresh()
+
+
+def _toggle_theme() -> None:
+    # Defer theme switching to avoid WebView use-after-free
+    QTimer.singleShot(0, _apply_theme)
 
 
 if not getattr(DeckBrowser, _PATCH_FLAG, False):
