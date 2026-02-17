@@ -1,3 +1,6 @@
+# Toggle Theme Button
+Install the Anki addon from [AnkiWeb](https://ankiweb.net/shared/info/1533157355).
+
 A simple Anki addon that adds a toggle between Light and Dark mode on the bottom navigation bar.
 
 ![Theme Toggler demonstration](https://github.com/qais8r/anki-toggle-theme-button/blob/main/assets/demo.gif?raw=true)
